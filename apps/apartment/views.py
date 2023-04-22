@@ -5,7 +5,7 @@ from .serializers import ApartmentSerializer
 from permissions import IsOwner
 
 
-class ProductViewSet(viewsets.ModelViewSet):
+class ApartmentViewSet(viewsets.ModelViewSet):
     queryset = Apartment.objects.all()
     serializer_class = ApartmentSerializer
     filterset_fields = ['category__slug']

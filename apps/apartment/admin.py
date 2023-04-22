@@ -1,3 +1,13 @@
 from django.contrib import admin
+from .models import Apartment, ApartmentImage
 
-# Register your models here.
+
+class ApartmentImageInline(admin.TabularInline):
+    model = ApartmentImage
+
+
+class ApartmentAdmin(admin.ModelAdmin):
+    inlines = [ApartmentImageInline]
+
+
+admin.site.register(Apartment, ApartmentAdmin)

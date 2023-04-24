@@ -46,10 +46,10 @@ class ApartmentSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['user'] = self.context['request'].user
         imgs = validated_data.pop('imgs', None)
-        product = Apartment.objects.create(**validated_data)
+        apartment = Apartment.objects.create(**validated_data)
         if imgs is not None:
             images = []
             for image in imgs:
-                images.append(ApartmentImage(product=product, image=image))
+                images.append(ApartmentImage(apartment=apartment, image=image))
             ApartmentImage.objects.bulk_create(images)
-        return product
+        return apartment

@@ -42,6 +42,7 @@ class ApartmentSerializer(serializers.ModelSerializer):
                                         instance.images.all(),
                                         many=True
                                         ).data
+        return representation
 
     def create(self, validated_data):
         validated_data['user'] = self.context['request'].user

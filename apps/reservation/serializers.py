@@ -6,7 +6,7 @@ class ReservationItemSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = ReservationItem 
-        fields = 'appartment'
+        fields = ['apartment']
 
 
 class ReservationSerializer(serializers.ModelSerializer):

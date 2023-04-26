@@ -44,6 +44,7 @@ urlpatterns = [
     path('auth/', include('djoser.urls.jwt')),
     path('', include('apps.apartment.urls')),
     path('', include('apps.category.urls')),
+    path('', include('apps.reservation.urls'))
 ]
 
 if settings.DEBUG:

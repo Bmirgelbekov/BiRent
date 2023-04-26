@@ -3,6 +3,8 @@ from rest_framework import permissions, viewsets
 from .models import Apartment
 from .serializers import ApartmentSerializer
 from permissions import IsOwner
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 
 
 class ApartmentViewSet(viewsets.ModelViewSet):
@@ -10,6 +12,10 @@ class ApartmentViewSet(viewsets.ModelViewSet):
     serializer_class = ApartmentSerializer
     filterset_fields = ['category__slug']
     search_fields = ['title']
+
+    @method_decorator(cache_page(60))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
     def get_permissions(self):
         method = self.request.method

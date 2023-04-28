@@ -1,6 +1,11 @@
 from django.db import models
 from apps.apartment.models import Apartment
 from django.contrib.auth import get_user_model
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+from .tasks import send_confirmation_mail
+
 
 User = get_user_model()
 
@@ -45,3 +50,14 @@ class ReservationItem(models.Model):
     class Meta:
         verbose_name = 'Бронь'
         verbose_name_plural = 'Брони'
+
+
+@receiver(post_save, sender=Reservation)
+def send_order_confirmation_mail(sender: Reservation, instance: Reservation, created: bool, **kwargs):
+    if created:
+        
+        send_confirmation_mail.delay(
+            instance.user.username,
+            instance.pk,
+            instance.user.email
+        )

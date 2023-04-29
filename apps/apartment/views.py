@@ -1,4 +1,6 @@
 from rest_framework import permissions, viewsets
+from rest_framework.decorators import action
+from rest_framework.response  import Response
 
 from .models import Apartment
 from .serializers import ApartmentSerializer
@@ -26,4 +28,11 @@ class ApartmentViewSet(viewsets.ModelViewSet):
         elif method in ['DELETE', 'PUT', 'PATCH']:
             self.permission_classes = [IsOwner]
         return super().get_permissions()
+    
+
+    @action(detail=False, methods=['GET'])
+    def get_novelties(self, request):
+        apartments = Apartment.objects.order_by('-created_at')[:10]
+        serializer = ApartmentSerializer(apartments, many=True)
+        return Response(serializer.data)
     

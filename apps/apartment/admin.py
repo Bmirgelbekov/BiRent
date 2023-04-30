@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Apartment, ApartmentImage
+from .models import Apartment, ApartmentImage, Rating
 
 
 class ApartmentImageInline(admin.TabularInline):

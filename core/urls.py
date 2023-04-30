@@ -24,6 +24,8 @@ from drf_yasg import openapi
 from django.contrib.auth import views as auth_views
 from apps.google_auth import views
 
+from apps.apartment.views import RateApartment
+
 
 
 schema_view = get_schema_view(
@@ -52,6 +54,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('social-auth/', include('social_django.urls', namespace='social')),
     path('', views.home, name='home'),
+    path('apartment/<slug:slug>/rate/', RateApartment.as_view(), name='apartment-rate'),
 ]
 
 if settings.DEBUG:

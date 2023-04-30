@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from .models import Apartment, ApartmentImage
+from .models import Apartment, ApartmentImage, Rating
 from django.db import models
+from django.db.models import Avg
 
 
 class ApartmentImageSerializer(serializers.ModelSerializer):
@@ -17,7 +18,8 @@ class ApartmentListSerializer(serializers.ListSerializer):
             'slug': item.slug,
             'user': item.user.username,
             'price': item.price,
-            'main_image': item.main_image.url
+            'main_image': item.main_image.url,
+            'rating': item.ratings.aggregate(Avg('ratings'))['ratings__avg']
         } for item in iterable]
 
 
@@ -42,6 +44,7 @@ class ApartmentSerializer(serializers.ModelSerializer):
                                         instance.images.all(),
                                         many=True
                                         ).data
+        representation['rating'] = instance.ratings.aggregate(Avg('ratings'))['ratings__avg']
         return representation
 
     def create(self, validated_data):
@@ -54,3 +57,10 @@ class ApartmentSerializer(serializers.ModelSerializer):
                 images.append(ApartmentImage(apartment=apartment, image=image))
             ApartmentImage.objects.bulk_create(images)
         return apartment
+    
+
+class RatingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rating
+        fields = ['id', 'user', 'apartment', 'ratings']
+        read_only_fields = ['id', 'user', 'apartment']

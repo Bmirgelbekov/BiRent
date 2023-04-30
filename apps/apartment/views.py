@@ -1,15 +1,16 @@
-from rest_framework import permissions, viewsets, generics
-from rest_framework.decorators import action
-from rest_framework.response  import Response
-from rest_framework.exceptions import ValidationError
-from django.shortcuts import get_object_or_404
 from django.db.models import Avg
+from django.shortcuts import get_object_or_404
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from rest_framework import generics, permissions, viewsets
+from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
+from rest_framework.response import Response
+
+from permissions import IsOwner
 
 from .models import Apartment, Rating
 from .serializers import ApartmentSerializer, RatingSerializer
-from permissions import IsOwner
-from django.views.decorators.cache import cache_page
-from django.utils.decorators import method_decorator
 
 
 class ApartmentViewSet(viewsets.ModelViewSet):
@@ -35,14 +36,14 @@ class ApartmentViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['GET'])
     def get_novelties(self, request):
-        apartments = Apartment.objects.order_by('-created_at')[:10]
+        apartments = Apartment.objects.order_by('-created_at')[:8]
         serializer = ApartmentSerializer(apartments, many=True)
         return Response(serializer.data)
     
     @action(detail=False, methods=['GET'])
     def get_popular(self, request):
-        apartment = Apartment.objects.annotate(avg_rating=Avg('ratings')).order_by('-avg_rating')
-        serializer = ApartmentSerializer(apartment, many=True)
+        apartments = Apartment.objects.annotate(avg_rating=Avg('ratings__ratings')).order_by('-avg_rating')[:8]
+        serializer = ApartmentSerializer(apartments, many=True)
         return Response(serializer.data)
     
 

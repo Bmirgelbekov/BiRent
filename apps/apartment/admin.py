@@ -9,5 +9,8 @@ class ApartmentImageInline(admin.TabularInline):
 class ApartmentAdmin(admin.ModelAdmin):
     inlines = [ApartmentImageInline]
 
+class RatingAdmin(admin.ModelAdmin):
+    pass
 
 admin.site.register(Apartment, ApartmentAdmin)
+admin.site.register(Rating, RatingAdmin)

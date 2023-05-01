@@ -51,3 +51,27 @@ class ApartmentImage(models.Model):
 
     def __str__(self) -> str:
         return f'image to {self.apartment.title}'
+
+
+class Rating(models.Model):
+    RATING_CHOICES = (
+        (1, '1 star'),
+        (2, '2 stars'),
+        (3, '3 stars'),
+        (4, '4 stars'),
+        (5, '5 stars'),
+    )
+    user = models.ForeignKey(
+        User, 
+        on_delete=models.CASCADE, 
+        related_name='ratings'
+    )
+    apartment = models.ForeignKey(
+        'Apartment', 
+        on_delete=models.CASCADE, 
+        related_name='ratings'
+    )
+    ratings = models.PositiveSmallIntegerField(choices=RATING_CHOICES)
+
+    class Meta:
+        unique_together = ('user', 'apartment')

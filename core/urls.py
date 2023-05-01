@@ -21,6 +21,11 @@ from django.urls import path, include
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from django.contrib.auth import views as auth_views
+from apps.google_auth import views
+
+from apps.apartment.views import RateApartment
+
 
 
 schema_view = get_schema_view(
@@ -44,7 +49,12 @@ urlpatterns = [
     path('auth/', include('djoser.urls.jwt')),
     path('', include('apps.apartment.urls')),
     path('', include('apps.category.urls')),
-    path('', include('apps.reservation.urls'))
+    path('', include('apps.reservation.urls')),
+    path('login/', views.login, name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('social-auth/', include('social_django.urls', namespace='social')),
+    path('', views.home, name='home'),
+    path('apartment/<slug:slug>/rate/', RateApartment.as_view(), name='apartment-rate'),
 ]
 
 if settings.DEBUG:

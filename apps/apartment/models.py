@@ -74,4 +74,6 @@ class Rating(models.Model):
     ratings = models.PositiveSmallIntegerField(choices=RATING_CHOICES)
 
     class Meta:
+        verbose_name = 'Рейтинг'
+        verbose_name_plural = 'Рейтинги'
         unique_together = ('user', 'apartment')

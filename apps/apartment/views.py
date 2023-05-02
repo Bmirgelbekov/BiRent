@@ -46,6 +46,12 @@ class ApartmentViewSet(viewsets.ModelViewSet):
         serializer = ApartmentSerializer(apartments, many=True)
         return Response(serializer.data)
     
+    @action(detail=False, methods=['GET'], url_path='users/(?P<user_id>\d+)/apartments')
+    def get_user_apartments(self, request, user_id=None):
+        apartments = Apartment.objects.filter(user_id=user_id)
+        serializer = ApartmentSerializer(apartments, many=True)
+        return Response(serializer.data)
+    
 
 class RateApartment(generics.CreateAPIView):
     queryset = Rating.objects.all()

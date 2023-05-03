@@ -26,8 +26,6 @@ from apps.google_auth import views
 
 from apps.apartment.views import RateApartment
 
-
-
 schema_view = get_schema_view(
    openapi.Info(
       title="BiRent API",
@@ -55,6 +53,7 @@ urlpatterns = [
     path('social-auth/', include('social_django.urls', namespace='social')),
     path('', views.home, name='home'),
     path('apartment/<slug:slug>/rate/', RateApartment.as_view(), name='apartment-rate'),
+    path('', include('apps.review.urls')),
 ]
 
 if settings.DEBUG:

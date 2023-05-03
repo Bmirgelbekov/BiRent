@@ -1,11 +1,11 @@
 from rest_framework import serializers
-from .models import Category
+from .models import Faciliti
 from django.db.models import Avg
 
 
-class CategorySerializer(serializers.ModelSerializer):
+class FacilitiSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Category
+        model = Faciliti
         fields = '__all__'
 
     def to_representation(self, instance):

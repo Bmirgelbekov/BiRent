@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'apps.reservation',
     'apps.review',
     'apps.google_auth',
+    'apps.faciliti',
 ]
 
 MIDDLEWARE = [

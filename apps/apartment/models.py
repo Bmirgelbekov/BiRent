@@ -3,6 +3,7 @@ from datetime import datetime
 from django.contrib.auth import get_user_model
 from django.db import models
 from slugify import slugify
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 User = get_user_model()
@@ -25,8 +26,18 @@ class Apartment(models.Model):
         null=True, 
         related_name='apartments'
         )
+    faciliti = models.ManyToManyField(
+        'faciliti.Faciliti',  
+        null=True, 
+        related_name='apartments')
+    during_stay = models.TextField(blank=True)
+    contact = PhoneNumberField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Апартаменты'
+        verbose_name_plural = 'Апартаменты'
 
     def save(self, *args, **kwargs):
         if not self.slug:

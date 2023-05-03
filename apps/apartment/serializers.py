@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Apartment, ApartmentImage, Rating
 from django.db import models
 from django.db.models import Avg
+from phonenumber_field.serializerfields import PhoneNumberField
 
 
 class ApartmentImageSerializer(serializers.ModelSerializer):
@@ -30,7 +31,8 @@ class ApartmentSerializer(serializers.ModelSerializer):
         required=False
     )
     user = serializers.ReadOnlyField(source='user.username')
-
+    contact = PhoneNumberField()
+    
     class Meta:
         model = Apartment
         fields = '__all__'

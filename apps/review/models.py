@@ -17,6 +17,8 @@ class ApartmentReview(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
     # sub_comments = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True, related_name='review_comments')
     
+    def __str__(self) -> str:
+        return f'Обзор от {self.user.username} на {self.apartment.title}'
     
 class ReviewImages(models.Model):
     

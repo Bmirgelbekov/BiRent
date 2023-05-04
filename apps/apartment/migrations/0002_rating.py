@@ -22,8 +22,6 @@ class Migration(migrations.Migration):
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='ratings', to=settings.AUTH_USER_MODEL)),
             ],
             options={
-                'verbose_name': 'Рейтинг',
-                'verbose_name_plural': 'Рейтинги',
                 'unique_together': {('user', 'apartment')},
             },
         ),

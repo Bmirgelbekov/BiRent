@@ -42,7 +42,13 @@ class ApartmentViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['GET'])
     def get_popular(self, request):
-        apartments = Apartment.objects.annotate(avg_rating=Avg('ratings__ratings')).order_by('-avg_rating')[:8]
+        apartments = Apartment.objects.exclude(ratings__isnull=True).annotate(avg_rating=Avg('ratings__ratings')).order_by('-avg_rating')[:8]
+        serializer = ApartmentSerializer(apartments, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['GET'], url_path='users/(?P<user_id>\d+)/apartments')
+    def get_user_apartments(self, request, user_id=None):
+        apartments = Apartment.objects.filter(user_id=user_id)
         serializer = ApartmentSerializer(apartments, many=True)
         return Response(serializer.data)
     
